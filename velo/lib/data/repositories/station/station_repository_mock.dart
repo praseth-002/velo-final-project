@@ -35,8 +35,8 @@ class StationRepositoryMock implements StationRepository {
       availableBikes: 0,
       availableDocks: 8,
       address: 'No 11 Street 78, Sangkat Tonle Bassac',
-      docks: _buildDocks(stationId: '3', total: 8, bikes: 0),
-      bikes: _buildBikes(stationId: '3', bikes: 0),
+      docks: _buildDocks(stationId: '3', total: 8, bikes: 6),
+      bikes: _buildBikes(stationId: '3', bikes: 6),
     ),
     Station(
       id: "4",
@@ -46,8 +46,8 @@ class StationRepositoryMock implements StationRepository {
       availableBikes: 0,
       availableDocks: 8,
       address: 'Norodom Blvd, 41, Phnom Penh',
-      docks: _buildDocks(stationId: '4', total: 8, bikes: 0),
-      bikes: _buildBikes(stationId: '4', bikes: 0),
+      docks: _buildDocks(stationId: '4', total: 7, bikes: 4),
+      bikes: _buildBikes(stationId: '4', bikes: 4),
     ),
   ];
 
