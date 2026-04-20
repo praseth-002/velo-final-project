@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:velo/data/repositories/station_repository.dart';
 import 'package:velo/model/station/station.dart';
 import '../../../../model/dock/dock.dart';
+import '../../../../model/station/station.dart';
+import '../../../../ui/state/pass_state.dart';
 // import '../../../../ui/utils/async_value.dart';
 
 enum BookingStatus { idle, loading, success, error }
