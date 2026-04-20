@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:velo/ui/screens/pass/pass_screen.dart';
 import '../../../../ui/screens/station/view_model/station_view_model.dart';
 import '../../../../ui/theme/theme.dart';
 
 class StationContent extends StatelessWidget {
   const StationContent({super.key});
 
+  String _bookButtonLabel(StationDetailsViewModel vm) {
+    if (vm.bookingStatus == BookingStatus.loading) return 'Booking...';
+    if (vm.selectedDock == null) {
+      return vm.usesOneTimeFee
+          ? 'Select a dock to book (one-time fee)'
+          : 'Select a dock to book';
+    }
+    return vm.usesOneTimeFee ? 'Book with One-Time Fee' : 'Book Bike';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final vm = context.watch<StationViewModel>();
+    final vm = context.watch<StationDetailsViewModel>();
 
     return Scaffold(
       appBar: AppBar(
@@ -19,7 +30,7 @@ class StationContent extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,7 +40,7 @@ class StationContent extends StatelessWidget {
             Text(vm.station.address, style: AppTextStyles.body),
             const SizedBox(height: 12),
             Text(
-              'Available: ${vm.station.availableBikes}/${vm.docks.length}',
+              'Available: ${vm.station.bikesAvailableCount}/${vm.docksWithAvailableBikes.length}',
               style: AppTextStyles.body,
             ),
             const SizedBox(height: 32),
@@ -39,17 +50,36 @@ class StationContent extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 color: Colors.orange.withOpacity(0.1),
-                child: const Text('You need an active pass to book',
-                    style: AppTextStyles.body),
+                child: Row(
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'No active pass. You can still book with a one-time fee, or get a pass.',
+                        style: AppTextStyles.body,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const PassScreen()),
+                        );
+                      },
+                      icon: const Icon(Icons.arrow_forward),
+                      tooltip: 'Go to pass screen',
+                    ),
+                  ],
+                ),
               ),
             if (!vm.hasActivePass) const SizedBox(height: 16),
 
             // Docks
-            Text('Docks', style: AppTextStyles.heading),
+            Text('Docks With Bikes', style: AppTextStyles.heading),
             const SizedBox(height: 12),
-            ...vm.docks.map((dock) {
+            ...vm.docksWithAvailableBikes.map((dock) {
               final isSelected = vm.selectedDock?.id == dock.id;
-              final available = dock.isAvailable;
+              final bike = vm.availableBikeForDock(dock);
+              final available = bike != null;
 
               return GestureDetector(
                 onTap: available ? () => vm.selectDock(dock) : null,
@@ -71,6 +101,14 @@ class StationContent extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(dock.label, style: AppTextStyles.body),
+                          if (bike != null)
+                            Text(
+                              'Bike ID: ${bike.id}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black87,
+                              ),
+                            ),
                           Text(
                             available ? 'Available' : 'Not Available',
                             style: TextStyle(
@@ -98,7 +136,11 @@ class StationContent extends StatelessWidget {
                 color: Colors.green.withOpacity(0.1),
                 child: Column(
                   children: [
-                    const Text('✓ Bike booked!'),
+                    Text(
+                      vm.usesOneTimeFee
+                          ? '✓ Bike booked with one-time fee!'
+                          : '✓ Bike booked!',
+                    ),
                     const SizedBox(height: 12),
                     SizedBox(
                       width: double.infinity,
@@ -129,16 +171,23 @@ class StationContent extends StatelessWidget {
                 ),
               )
             else
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: vm.canBook ? vm.bookBike : null,
-                  child: const Text('Book Bike'),
-                ),
-              ),
+              const SizedBox.shrink(),
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: vm.selectedDock == null
+          ? null
+          : SizedBox(
+              width: MediaQuery.of(context).size.width - 32,
+              child: ElevatedButton(
+                onPressed: vm.canBook ? vm.bookBike : null,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                child: Text(_bookButtonLabel(vm)),
+              ),
+            ),
     );
   }
 }
