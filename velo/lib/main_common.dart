@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'ui/screens/map/map_screen.dart';
-import 'ui/screens/pass/pass_screen.dart';
+import 'package:velo/ui/screens/map/map_screen.dart';
+// import 'ui/screens/map/map_screen.dart';
+// import 'ui/screens/pass/pass_screen.dart';
 import 'ui/theme/theme.dart';
 
 void mainCommon(List<InheritedProvider> providers) {
@@ -39,7 +40,7 @@ class _RootShellState extends State<_RootShell> {
 
   final List<Widget> _pages = const [
     MapScreen(),
-    PassScreen(),
+    // PassScreen(),
   ];
 
   @override

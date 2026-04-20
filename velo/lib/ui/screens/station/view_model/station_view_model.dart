@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../../../data/repositories/station/station_repository.dart';
+import 'package:velo/data/repositories/station_repository.dart';
+import 'package:velo/model/station/station.dart';
 import '../../../../model/dock/dock.dart';
-import '../../../../model/station/station.dart';
-import '../../../../ui/states/pass_state.dart';
 // import '../../../../ui/utils/async_value.dart';
 
 enum BookingStatus { idle, loading, success, error }
 
 class StationViewModel extends ChangeNotifier {
   final StationRepository stationRepository;
-  final PassState passState;
+  // final PassState passState;
 
   Station station;
 
@@ -92,3 +91,4 @@ class StationViewModel extends ChangeNotifier {
     notifyListeners();
   }
 }
+
