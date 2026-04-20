@@ -40,7 +40,12 @@ class StationContent extends StatelessWidget {
             Text(vm.station.address, style: AppTextStyles.body),
             const SizedBox(height: 12),
             Text(
-              'Available: ${vm.station.bikesAvailableCount}/${vm.docksWithAvailableBikes.length}',
+              'Available Bikes: ${vm.station.bikesAvailableCount}',
+              style: AppTextStyles.body,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Available Parking: ${vm.docks.length}',
               style: AppTextStyles.body,
             ),
             const SizedBox(height: 32),
@@ -103,12 +108,16 @@ class StationContent extends StatelessWidget {
                           Text(dock.label, style: AppTextStyles.body),
                           if (bike != null)
                             Text(
-                              'Bike ID: ${bike.id}',
+                              '${bike.id}',
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.black87,
                               ),
                             ),
+                        ],
+                      ),
+                      Row(
+                        children: [
                           Text(
                             available ? 'Available' : 'Not Available',
                             style: TextStyle(
@@ -116,15 +125,20 @@ class StationContent extends StatelessWidget {
                               color: available ? Colors.green : Colors.red,
                             ),
                           ),
+                          if (isSelected) ...[
+                            const SizedBox(width: 8),
+                            const Icon(
+                              Icons.check_circle,
+                              color: AppColors.primary,
+                            ),
+                          ],
                         ],
                       ),
-                      if (isSelected)
-                        const Icon(Icons.check_circle, color: AppColors.primary),
                     ],
                   ),
                 ),
               );
-            }).toList(),
+            }),
             const SizedBox(height: 32),
 
             // Status messages
