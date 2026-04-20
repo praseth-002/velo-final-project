@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:velo/data/repositories/station_repository.dart';
+import 'package:velo/data/repositories/station/station_repository.dart';
 import 'package:velo/model/station/station.dart';
 
 class StationViewModel extends ChangeNotifier {

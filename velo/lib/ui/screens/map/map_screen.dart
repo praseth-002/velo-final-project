@@ -6,16 +6,28 @@ import 'package:velo/model/station/station.dart';
 import 'package:velo/ui/screens/map/view_model/map_view_model.dart';
 import 'package:velo/ui/screens/map/widgets/station_bottom_sheet.dart';
 import 'package:velo/ui/screens/map/widgets/station_marker.dart';
+import 'package:velo/ui/screens/station/station_screen.dart';
 
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
+
+  Future<void> _openStationDetails(BuildContext context, Station station) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => StationScreen(station: station)),
+    );
+    await context.read<StationViewModel>().loadStations();
+  }
 
   void _showStationSheet(BuildContext context, Station station) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (_) => StationBottomSheet(station: station),
+      builder: (_) => StationBottomSheet(
+        station: station,
+        onViewStation: () => _openStationDetails(context, station),
+      ),
     );
   }
 
@@ -42,7 +54,7 @@ class MapScreen extends StatelessWidget {
                 width: 40,
                 height: 48,
                 child: StationMarker(
-                  availableBikes: station.availableBikes,
+                  availableBikes: station.bikesAvailableCount,
                   onTap: () => _showStationSheet(context, station),
                 ),
               );
