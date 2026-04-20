@@ -14,7 +14,7 @@ class MapScreen extends StatelessWidget {
   Future<void> _openStationDetails(BuildContext context, Station station) async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => StationScreen(station: station)),
+      MaterialPageRoute(builder: (_) => StationDetailsScreen(station: station)),
     );
     await context.read<StationViewModel>().loadStations();
   }
