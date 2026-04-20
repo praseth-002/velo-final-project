@@ -6,10 +6,10 @@ import '../../../ui/screens/station/view_model/station_view_model.dart';
 import '../../../ui/screens/station/widgets/station_content.dart';
 import '../../../ui/state/pass_state.dart';
 
-class StationScreen extends StatelessWidget {
+class StationDetailsScreen extends StatelessWidget {
   final Station station;
 
-  const StationScreen({super.key, required this.station});
+  const StationDetailsScreen({super.key, required this.station});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,11 @@ class StationScreen extends StatelessWidget {
         stationRepository: context.read<StationRepository>(),
         passState: context.read<PassState>(),
       ),
-      child: const StationContent(),
+      child: const StationDetailsContent(),
     );
   }
+}
+
+class StationScreen extends StationDetailsScreen {
+  const StationScreen({super.key, required super.station});
 }

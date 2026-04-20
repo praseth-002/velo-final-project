@@ -1,6 +1,5 @@
 import 'package:velo/model/bike/bike.dart';
 import 'package:velo/model/dock/dock.dart';
-import 'package:velo/model/station/station.dart';
 
 /// DTO for Station metadata (name, location, address).
 class StationDto {

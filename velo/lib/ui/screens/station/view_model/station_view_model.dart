@@ -64,6 +64,18 @@ class StationDetailsViewModel extends ChangeNotifier {
     return null;
   }
 
+  void updateStation(Station updatedStation) {
+    station = updatedStation;
+    selectedDock = null;
+    notifyListeners();
+  }
+
+  Future<void> refreshStation() async {
+    station = await stationRepository.fetchStationById(station.id);
+    selectedDock = null;
+    notifyListeners();
+  }
+
   // ─── Actions ──────────────────────────────────────────────────────────────
 
   void selectDock(Dock dock) {

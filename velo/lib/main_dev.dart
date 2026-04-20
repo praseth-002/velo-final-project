@@ -3,7 +3,6 @@ import 'package:velo/data/repositories/station/station_repository.dart';
 import 'package:velo/data/repositories/station/station_repository_mock.dart';
 import 'package:velo/data/repositories/station/station_repository_firebase.dart';
 import 'package:velo/ui/screens/map/view_model/map_view_model.dart';
-import 'package:velo/ui/screens/station/view_model/station_view_model.dart';
 import 'data/repositories/pass/pass_repository.dart';
 import 'data/repositories/pass/pass_repository_mock.dart';
 import 'data/repositories/pass/pass_repository_firebase.dart';
