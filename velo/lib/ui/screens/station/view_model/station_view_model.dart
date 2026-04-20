@@ -1,94 +1,94 @@
-import 'package:flutter/material.dart';
-import '../../../../data/repositories/station/station_repository.dart';
-import '../../../../model/dock/dock.dart';
-import '../../../../model/station/station.dart';
-import '../../../../ui/states/pass_state.dart';
-// import '../../../../ui/utils/async_value.dart';
+// import 'package:flutter/material.dart';
+// import '../../../../data/repositories/station/station_repository.dart';
+// import '../../../../model/dock/dock.dart';
+// import '../../../../model/station/station.dart';
+// import '../../../../ui/states/pass_state.dart';
+// // import '../../../../ui/utils/async_value.dart';
 
-enum BookingStatus { idle, loading, success, error }
+// enum BookingStatus { idle, loading, success, error }
 
-class StationViewModel extends ChangeNotifier {
-  final StationRepository stationRepository;
-  final PassState passState;
+// class StationViewModel extends ChangeNotifier {
+//   final StationRepository stationRepository;
+//   final PassState passState;
 
-  Station station;
+//   Station station;
 
-  // Selected dock (null = nothing selected)
-  Dock? selectedDock;
+//   // Selected dock (null = nothing selected)
+//   Dock? selectedDock;
 
-  // Booking lifecycle
-  BookingStatus bookingStatus = BookingStatus.idle;
-  String? bookingError;
+//   // Booking lifecycle
+//   BookingStatus bookingStatus = BookingStatus.idle;
+//   String? bookingError;
 
-  StationViewModel({
-    required this.station,
-    required this.stationRepository,
-    required this.passState,
-  }) {
-    // Re-notify our listeners whenever the global pass changes
-    // so the UI reacts (banner appears/disappears, button enables)
-    passState.addListener(_onPassChanged);
-  }
+//   StationViewModel({
+//     required this.station,
+//     required this.stationRepository,
+//     required this.passState,
+//   }) {
+//     // Re-notify our listeners whenever the global pass changes
+//     // so the UI reacts (banner appears/disappears, button enables)
+//     passState.addListener(_onPassChanged);
+//   }
 
-  @override
-  void dispose() {
-    passState.removeListener(_onPassChanged);
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     passState.removeListener(_onPassChanged);
+//     super.dispose();
+//   }
 
-  // ─── Derived getters ──────────────────────────────────────────────────────
+//   // ─── Derived getters ──────────────────────────────────────────────────────
 
-  bool get hasActivePass => passState.hasActivePass;
+//   bool get hasActivePass => passState.hasActivePass;
 
-  bool get canBook =>
-      hasActivePass &&
-      selectedDock != null &&
-      bookingStatus != BookingStatus.loading;
+//   bool get canBook =>
+//       hasActivePass &&
+//       selectedDock != null &&
+//       bookingStatus != BookingStatus.loading;
 
-  List<Dock> get docks => station.docks;
+//   List<Dock> get docks => station.docks;
 
-  // ─── Actions ──────────────────────────────────────────────────────────────
+//   // ─── Actions ──────────────────────────────────────────────────────────────
 
-  void selectDock(Dock dock) {
-    if (!dock.isAvailable) return;
-    if (!hasActivePass) return;
+//   void selectDock(Dock dock) {
+//     if (!dock.isAvailable) return;
+//     if (!hasActivePass) return;
 
-    selectedDock = selectedDock?.id == dock.id ? null : dock;
-    notifyListeners();
-  }
+//     selectedDock = selectedDock?.id == dock.id ? null : dock;
+//     notifyListeners();
+//   }
 
-  Future<void> bookBike() async {
-    if (!canBook) return;
+//   Future<void> bookBike() async {
+//     if (!canBook) return;
 
-    bookingStatus = BookingStatus.loading;
-    bookingError = null;
-    notifyListeners();
+//     bookingStatus = BookingStatus.loading;
+//     bookingError = null;
+//     notifyListeners();
 
-    try {
-      final updatedStation = await stationRepository.bookBike(
-        stationId: station.id,
-        dockId: selectedDock!.id,
-      );
-      station = updatedStation;
-      selectedDock = null;
-      bookingStatus = BookingStatus.success;
-    } catch (e) {
-      bookingStatus = BookingStatus.error;
-      bookingError = e.toString();
-    }
+//     try {
+//       final updatedStation = await stationRepository.bookBike(
+//         stationId: station.id,
+//         dockId: selectedDock!.id,
+//       );
+//       station = updatedStation;
+//       selectedDock = null;
+//       bookingStatus = BookingStatus.success;
+//     } catch (e) {
+//       bookingStatus = BookingStatus.error;
+//       bookingError = e.toString();
+//     }
 
-    notifyListeners();
-  }
+//     notifyListeners();
+//   }
 
-  void resetBookingStatus() {
-    bookingStatus = BookingStatus.idle;
-    bookingError = null;
-    notifyListeners();
-  }
+//   void resetBookingStatus() {
+//     bookingStatus = BookingStatus.idle;
+//     bookingError = null;
+//     notifyListeners();
+//   }
 
-  void _onPassChanged() {
-    // If the pass was deactivated, clear any selection
-    if (!hasActivePass) selectedDock = null;
-    notifyListeners();
-  }
-}
+//   void _onPassChanged() {
+//     // If the pass was deactivated, clear any selection
+//     if (!hasActivePass) selectedDock = null;
+//     notifyListeners();
+//   }
+// }

@@ -11,7 +11,7 @@ class PassRepositoryFirebase implements PassRepository {
 
   List<Pass>? _cachedPasses;
 
-  // 🔹 Fetch all passes
+  //  Fetch all passes
   @override
   Future<List<Pass>> getPasses({bool forceFetch = false}) async {
     // return cache
@@ -42,7 +42,7 @@ class PassRepositoryFirebase implements PassRepository {
     return result;
   }
 
-  // 🔹 Fetch single pass
+  //  Fetch single pass
   @override
   Future<Pass?> getPassById(String id) async {
     final Uri uri =
@@ -61,7 +61,7 @@ class PassRepositoryFirebase implements PassRepository {
     return PassDto.fromJson(id, body);
   }
 
-  // 🔹 Purchase pass
+  //  Purchase pass
   @override
   Future<Pass> purchasePass(PassType type) async {
     final Uri uri =
@@ -118,14 +118,14 @@ class PassRepositoryFirebase implements PassRepository {
     _cachedPasses?.removeWhere((p) => p.id == id);
   }
 
-  // 🔹 Helper
+  //  Helper
   Duration _getDuration(PassType type) {
     switch (type) {
       case PassType.day:
         return const Duration(days: 1);
       case PassType.monthly:
         return const Duration(days: 30);
-      case PassType.yearly:
+      case PassType.annual:
         return const Duration(days: 365);
     }
   }

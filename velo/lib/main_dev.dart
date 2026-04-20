@@ -4,7 +4,7 @@ import 'data/repositories/pass/pass_repository_mock.dart';
 // import 'data/repositories/station/station_repository.dart';
 // import 'data/repositories/station/station_repository_mock.dart';
 import 'main_common.dart';
-// import 'ui/states/pass_state.dart';
+import 'ui/state/pass_state.dart';
 
 List<InheritedProvider> get devProviders {
   final passRepo = MockPassRepository();
@@ -12,9 +12,9 @@ List<InheritedProvider> get devProviders {
   return [
     Provider<PassRepository>(create: (_) => passRepo),
     // Provider<StationRepository>(create: (_) => stationRepo),
-    // ChangeNotifierProvider<PassState>(
-    //   create: (_) => PassState(repository: passRepo),
-    // ),
+    ChangeNotifierProvider<PassState>(
+      create: (_) => PassState(repository: passRepo),
+    ),
   ];
 }
 

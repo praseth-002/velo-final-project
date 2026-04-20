@@ -5,7 +5,7 @@ abstract class PassRepository {
 
   Future<Pass?> getPassById(String id);
 
-  Future<void> purchasePass(PassType type);
+  Future<Pass> purchasePass(PassType type);
 
   Future<void> cancelPass(String id);
 }
