@@ -14,7 +14,7 @@ class StationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => StationViewModel(
+      create: (context) => StationDetailsViewModel(
         station: station,
         stationRepository: context.read<StationRepository>(),
         passState: context.read<PassState>(),

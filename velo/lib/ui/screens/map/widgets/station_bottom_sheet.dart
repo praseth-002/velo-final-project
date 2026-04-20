@@ -3,8 +3,13 @@ import 'package:velo/model/station/station.dart';
 
 class StationBottomSheet extends StatelessWidget {
   final Station station;
+  final Future<void> Function() onViewStation;
 
-  const StationBottomSheet({super.key, required this.station});
+  const StationBottomSheet({
+    super.key,
+    required this.station,
+    required this.onViewStation,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,7 @@ class StationBottomSheet extends StatelessWidget {
                   color: Colors.orange,
                 ),
               ),
-              _BikesBadge(count: station.availableBikes),
+              _BikesBadge(count: station.bikesAvailableCount),
             ],
           ),
           const SizedBox(height: 4),
@@ -47,7 +52,7 @@ class StationBottomSheet extends StatelessWidget {
           const SizedBox(height: 16),
 
           // docks row
-          _DocksRow(openDocks: station.availableDocks),
+          _DocksRow(openDocks: station.openDocksCount),
           const SizedBox(height: 16),
 
           // button
@@ -61,8 +66,9 @@ class StationBottomSheet extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
+                await onViewStation();
               },
               child: const Text(
                 'View Station',
