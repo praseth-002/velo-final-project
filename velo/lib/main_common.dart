@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:velo/ui/screens/map/map_screen.dart';
+// import 'ui/screens/map/map_screen.dart';
+// import 'ui/screens/pass/pass_screen.dart';
 // import 'ui/screens/map/map_screen.dart';
 import 'ui/screens/pass/pass_screen.dart';
 import 'ui/theme/theme.dart';
@@ -38,6 +41,8 @@ class _RootShellState extends State<_RootShell> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = const [
+    MapScreen(),
+    // PassScreen(),
     // MapScreen(),
     PassScreen(),
   ];
