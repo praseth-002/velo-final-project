@@ -10,10 +10,8 @@ class StationRepositoryMock implements StationRepository {
       name: "Central Market",
       latitude: 11.5762,
       longitude: 104.9227,
-      availableBikes: 5,
-      availableDocks: 10,
       address: 'Calmette St. 53, Daun Penh District, Phnom Penh 55555',
-      docks: _buildDocks(stationId: '1', total: 15, bikes: 5),
+      docks: _buildDocks(stationId: '1', total: 15),
       bikes: _buildBikes(stationId: '1', bikes: 5),
     ),
     Station(
@@ -21,10 +19,8 @@ class StationRepositoryMock implements StationRepository {
       name: "Wat Phnom",
       latitude: 11.5797,
       longitude: 104.9256,
-      availableBikes: 10,
-      availableDocks: 8,
       address: 'No. 5 Rd, Phnom Penh',
-      docks: _buildDocks(stationId: '2', total: 18, bikes: 10),
+      docks: _buildDocks(stationId: '2', total: 18),
       bikes: _buildBikes(stationId: '2', bikes: 10),
     ),
     Station(
@@ -32,10 +28,8 @@ class StationRepositoryMock implements StationRepository {
       name: "Riverside",
       latitude: 11.5628,
       longitude: 104.9310,
-      availableBikes: 0,
-      availableDocks: 8,
       address: 'No 11 Street 78, Sangkat Tonle Bassac',
-      docks: _buildDocks(stationId: '3', total: 8, bikes: 6),
+      docks: _buildDocks(stationId: '3', total: 8),
       bikes: _buildBikes(stationId: '3', bikes: 6),
     ),
     Station(
@@ -43,10 +37,8 @@ class StationRepositoryMock implements StationRepository {
       name: "Independence Monument",
       latitude: 11.5564,
       longitude: 104.9312,
-      availableBikes: 0,
-      availableDocks: 8,
       address: 'Norodom Blvd, 41, Phnom Penh',
-      docks: _buildDocks(stationId: '4', total: 7, bikes: 4),
+      docks: _buildDocks(stationId: '4', total: 7),
       bikes: _buildBikes(stationId: '4', bikes: 4),
     ),
   ];
@@ -64,9 +56,6 @@ class StationRepositoryMock implements StationRepository {
       final station = _stations[index];
       final dockIndex = station.docks.indexWhere((d) => d.id == dockId);
       if (dockIndex == -1) throw Exception('Dock $dockId not found');
-      if (!station.docks[dockIndex].isAvailable) {
-        throw Exception('Selected dock has no available bike');
-      }
 
       final bikeIndex = station.bikes.indexWhere(
         (b) => b.id == bikeId && b.dockId == dockId && b.isAvailable,
@@ -75,20 +64,12 @@ class StationRepositoryMock implements StationRepository {
         throw Exception('Bike $bikeId not available at dock $dockId');
       }
 
-      final updatedDocks = List<Dock>.from(station.docks);
-      updatedDocks[dockIndex] = updatedDocks[dockIndex].copyWith(
-        status: DockStatus.occupied,
-      );
-
       final updatedBikes = List<Bike>.from(station.bikes);
       updatedBikes[bikeIndex] = updatedBikes[bikeIndex].copyWith(
         status: BikeStatus.checkedOut,
       );
 
       final updated = station.copyWith(
-        availableBikes: station.availableBikes - 1,
-        availableDocks: station.availableDocks + 1,
-        docks: updatedDocks,
         bikes: updatedBikes,
       );
       _stations[index] = updated;
@@ -109,14 +90,11 @@ class StationRepositoryMock implements StationRepository {
   static List<Dock> _buildDocks({
     required String stationId,
     required int total,
-    required int bikes,
   }) {
     return List.generate(total, (index) {
-      final hasBike = index < bikes;
       return Dock(
         id: '$stationId-dock-${index + 1}',
         label: 'Dock ${index + 1}',
-        status: hasBike ? DockStatus.available : DockStatus.occupied,
       );
     });
   }

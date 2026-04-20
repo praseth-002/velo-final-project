@@ -9,11 +9,6 @@ class StationContent extends StatelessWidget {
 
   String _bookButtonLabel(StationDetailsViewModel vm) {
     if (vm.bookingStatus == BookingStatus.loading) return 'Booking...';
-    if (vm.selectedDock == null) {
-      return vm.usesOneTimeFee
-          ? 'Select a dock to book (one-time fee)'
-          : 'Select a dock to book';
-    }
     return vm.usesOneTimeFee ? 'Book with One-Time Fee' : 'Book Bike';
   }
 
@@ -45,7 +40,7 @@ class StationContent extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Available Parking: ${vm.docks.length}',
+              'Available Parking: ${vm.station.openDocksCount}',
               style: AppTextStyles.body,
             ),
             const SizedBox(height: 32),
@@ -84,10 +79,9 @@ class StationContent extends StatelessWidget {
             ...vm.docksWithAvailableBikes.map((dock) {
               final isSelected = vm.selectedDock?.id == dock.id;
               final bike = vm.availableBikeForDock(dock);
-              final available = bike != null;
 
               return GestureDetector(
-                onTap: available ? () => vm.selectDock(dock) : null,
+                onTap: () => vm.selectDock(dock),
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(12),
@@ -97,7 +91,7 @@ class StationContent extends StatelessWidget {
                       width: isSelected ? 2 : 1,
                     ),
                     borderRadius: BorderRadius.circular(8),
-                    color: available ? Colors.white : Colors.grey[100],
+                    color: Colors.white,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,7 +102,7 @@ class StationContent extends StatelessWidget {
                           Text(dock.label, style: AppTextStyles.body),
                           if (bike != null)
                             Text(
-                              '${bike.id}',
+                              'Bike ID: ${bike.id}',
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.black87,
@@ -118,11 +112,11 @@ class StationContent extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Text(
-                            available ? 'Available' : 'Not Available',
+                          const Text(
+                            'Available',
                             style: TextStyle(
                               fontSize: 12,
-                              color: available ? Colors.green : Colors.red,
+                              color: Colors.green,
                             ),
                           ),
                           if (isSelected) ...[

@@ -47,8 +47,6 @@ class StationDetailsViewModel extends ChangeNotifier {
       selectedDock != null &&
       bookingStatus != BookingStatus.loading;
 
-  List<Dock> get docks => station.docks;
-
   List<Dock> get docksWithAvailableBikes {
     return station.docks.where((dock) {
       return station.bikes.any(
@@ -69,7 +67,7 @@ class StationDetailsViewModel extends ChangeNotifier {
   // ─── Actions ──────────────────────────────────────────────────────────────
 
   void selectDock(Dock dock) {
-    if (!dock.isAvailable) return;
+    if (availableBikeForDock(dock) == null) return;
 
     selectedDock = selectedDock?.id == dock.id ? null : dock;
     notifyListeners();
