@@ -8,8 +8,8 @@ class StationRepositoryMock implements StationRepository {
     Station(
       id: "1",
       name: "Central Market",
-      latitude: 11.5762,
-      longitude: 104.9227,
+      latitude: 11.569626453704016,
+      longitude: 104.92098053806961,
       address: 'Calmette St. 53, Daun Penh District, Phnom Penh 55555',
       docks: _buildDocks(stationId: '1', total: 15),
       bikes: _buildBikes(stationId: '1', bikes: 5),
@@ -17,8 +17,8 @@ class StationRepositoryMock implements StationRepository {
     Station(
       id: "2",
       name: "Wat Phnom",
-      latitude: 11.5797,
-      longitude: 104.9256,
+      latitude: 11.57640856103155,
+      longitude: 104.923113622726,
       address: 'No. 5 Rd, Phnom Penh',
       docks: _buildDocks(stationId: '2', total: 18),
       bikes: _buildBikes(stationId: '2', bikes: 10),
@@ -26,8 +26,8 @@ class StationRepositoryMock implements StationRepository {
     Station(
       id: "3",
       name: "Riverside",
-      latitude: 11.5628,
-      longitude: 104.9310,
+      latitude: 11.571651079548452,
+      longitude: 104.92946301852798,
       address: 'No 11 Street 78, Sangkat Tonle Bassac',
       docks: _buildDocks(stationId: '3', total: 8),
       bikes: _buildBikes(stationId: '3', bikes: 6),
@@ -35,8 +35,8 @@ class StationRepositoryMock implements StationRepository {
     Station(
       id: "4",
       name: "Independence Monument",
-      latitude: 11.5564,
-      longitude: 104.9312,
+      latitude: 11.556833819255305,
+      longitude: 104.92851483198262,
       address: 'Norodom Blvd, 41, Phnom Penh',
       docks: _buildDocks(stationId: '4', total: 7),
       bikes: _buildBikes(stationId: '4', bikes: 4),
