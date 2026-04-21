@@ -40,7 +40,7 @@ class _RootShell extends StatefulWidget {
 class _RootShellState extends State<_RootShell> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
+  final List<Widget> _pages = [
     MapScreen(),
     // PassScreen(),
     // MapScreen(),

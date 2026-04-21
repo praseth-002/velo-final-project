@@ -17,8 +17,8 @@ class StationRepositoryMock implements StationRepository {
     Station(
       id: "2",
       name: "Wat Phnom",
-      latitude: 11.5797,
-      longitude: 104.9256,
+      latitude: 11.5761,
+      longitude: 104.9231,
       address: 'No. 5 Rd, Phnom Penh',
       docks: _buildDocks(stationId: '2', total: 18),
       bikes: _buildBikes(stationId: '2', bikes: 10),

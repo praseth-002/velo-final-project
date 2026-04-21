@@ -23,7 +23,6 @@ class StationBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // header row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
