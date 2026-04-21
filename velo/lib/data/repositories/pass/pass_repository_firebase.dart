@@ -73,7 +73,7 @@ class PassRepositoryFirebase implements PassRepository {
       id: '',
       type: type,
       startDate: now,
-      endDate: now.add(_getDuration(type)),
+      endDate: now.add(type.duration),
     );
 
     final http.Response response = await http.post(
@@ -118,15 +118,4 @@ class PassRepositoryFirebase implements PassRepository {
     _cachedPasses?.removeWhere((p) => p.id == id);
   }
 
-  //  Helper
-  Duration _getDuration(PassType type) {
-    switch (type) {
-      case PassType.day:
-        return const Duration(days: 1);
-      case PassType.monthly:
-        return const Duration(days: 30);
-      case PassType.annual:
-        return const Duration(days: 365);
-    }
-  }
 }
