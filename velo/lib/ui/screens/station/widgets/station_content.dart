@@ -113,10 +113,7 @@ class StationDetailsContent extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 8),
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.cardBorder,
-                        width: 1,
-                      ),
+                      border: Border.all(color: AppColors.cardBorder, width: 1),
                       borderRadius: BorderRadius.circular(12),
                       color: Colors.white,
                     ),
@@ -154,10 +151,7 @@ class StationDetailsContent extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 8),
-                            Icon(
-                              Icons.chevron_right,
-                              color: AppColors.primary,
-                            ),
+                            Icon(Icons.chevron_right, color: AppColors.primary),
                           ],
                         ),
                       ],
@@ -170,15 +164,6 @@ class StationDetailsContent extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class StationContent extends StatelessWidget {
-  const StationContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const StationDetailsContent();
   }
 }
 

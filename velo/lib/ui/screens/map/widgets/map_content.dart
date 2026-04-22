@@ -59,8 +59,6 @@ class _MapContentState extends State<MapContent> {
         final station = vm.selectedStation!;
         context.read<StationViewModel>().clearSelectedStation();
         _mapController.move(LatLng(station.latitude, station.longitude), 16);
-
-        // _showStationSheet(vm.selectedStation!);
       });
     }
 
@@ -104,7 +102,7 @@ class _MapContentState extends State<MapContent> {
             child: Column(
               children: [
                 StationSearchBar(
-                  onSubmitted: (query) {
+                  onSubmitted: (_) {
                     context.read<StationViewModel>().selectFirstResult();
                   },
                   onChanged: (value) {
@@ -131,7 +129,7 @@ class _MapContentState extends State<MapContent> {
                             context.read<StationViewModel>().selectStation(
                               station,
                             );
-                            context.read<StationViewModel>().searchStation(""); // clear results
+                            context.read<StationViewModel>().searchStation("");
                           },
                         );
                       },
@@ -139,11 +137,6 @@ class _MapContentState extends State<MapContent> {
                   ),
               ],
             ),
-            // child: StationSearchBar(
-            //   onSubmitted: (query) {
-            //     context.read<StationViewModel>().searchStation(query);
-            //   },
-            // ),
           ),
         ],
       ),

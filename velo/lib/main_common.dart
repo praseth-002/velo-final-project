@@ -8,12 +8,7 @@ import 'ui/screens/pass/pass_screen.dart';
 import 'ui/theme/theme.dart';
 
 void mainCommon(List<InheritedProvider> providers) {
-  runApp(
-    MultiProvider(
-      providers: providers,
-      child: const BikeRentalApp(),
-    ),
-  );
+  runApp(MultiProvider(providers: providers, child: const BikeRentalApp()));
 }
 
 class BikeRentalApp extends StatelessWidget {
@@ -40,12 +35,7 @@ class _RootShell extends StatefulWidget {
 class _RootShellState extends State<_RootShell> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    MapScreen(),
-    // PassScreen(),
-    // MapScreen(),
-    PassScreen(),
-  ];
+  final List<Widget> _pages = [MapScreen(), PassScreen()];
 
   @override
   Widget build(BuildContext context) {

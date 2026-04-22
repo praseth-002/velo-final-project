@@ -21,7 +21,3 @@ class StationDetailsScreen extends StatelessWidget {
     );
   }
 }
-
-class StationScreen extends StationDetailsScreen {
-  const StationScreen({super.key, required super.station});
-}
