@@ -11,6 +11,7 @@ class StationDetailsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final vm = context.watch<StationDetailsViewModel>();
+    final availableDockBikes = vm.availableDockBikes;
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +73,7 @@ class StationDetailsContent extends StatelessWidget {
               style: AppTextStyles.body,
             ),
             const SizedBox(height: 12),
-            if (vm.docksWithAvailableBikes.isEmpty)
+            if (availableDockBikes.isEmpty)
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
@@ -85,84 +86,85 @@ class StationDetailsContent extends StatelessWidget {
                   'No available bikes at this station right now.',
                   style: AppTextStyles.body,
                 ),
-              ),
-            ...vm.docksWithAvailableBikes.map((dock) {
-              final bike = vm.availableBikeForDock(dock);
-              if (bike == null) return const SizedBox.shrink();
+              )
+            else
+              ...availableDockBikes.map((dockBike) {
+                final dock = dockBike.dock;
+                final bike = dockBike.bike;
 
-              return GestureDetector(
-                onTap: () async {
-                  final updatedStation = await Navigator.push<Station>(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => BikeDetailsScreen(
-                        station: vm.station,
-                        dock: dock,
-                        bike: bike,
+                return GestureDetector(
+                  onTap: () async {
+                    final updatedStation = await Navigator.push<Station>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BikeDetailsScreen(
+                          station: vm.station,
+                          dock: dock,
+                          bike: bike,
+                        ),
                       ),
+                    );
+
+                    if (!context.mounted || updatedStation == null) return;
+
+                    vm.updateStation(updatedStation);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: AppColors.cardBorder,
+                        width: 1,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
                     ),
-                  );
-
-                  if (!context.mounted || updatedStation == null) return;
-
-                  vm.updateStation(updatedStation);
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: AppColors.cardBorder,
-                      width: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              dock.label,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textDark,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Bike ID: ${bike.id}',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textMedium,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Row(
+                          children: [
+                            Text(
+                              'Available',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.green,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(
+                              Icons.chevron_right,
+                              color: AppColors.primary,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.white,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            dock.label,
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.textDark,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'Bike ID: ${bike.id}',
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: AppColors.textMedium,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Row(
-                        children: [
-                          Text(
-                            'Available',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.green,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Icon(
-                            Icons.chevron_right,
-                            color: AppColors.primary,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
+                );
+              }),
             const SizedBox(height: 16),
           ],
         ),

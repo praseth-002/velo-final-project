@@ -4,7 +4,6 @@ import '../../../data/repositories/station/station_repository.dart';
 import '../../../model/station/station.dart';
 import '../../../ui/screens/station/view_model/station_view_model.dart';
 import '../../../ui/screens/station/widgets/station_content.dart';
-import '../../../ui/state/pass_state.dart';
 
 class StationDetailsScreen extends StatelessWidget {
   final Station station;
@@ -17,7 +16,6 @@ class StationDetailsScreen extends StatelessWidget {
       create: (context) => StationDetailsViewModel(
         station: station,
         stationRepository: context.read<StationRepository>(),
-        passState: context.read<PassState>(),
       ),
       child: const StationDetailsContent(),
     );

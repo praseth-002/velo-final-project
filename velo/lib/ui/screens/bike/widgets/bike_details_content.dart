@@ -93,6 +93,17 @@ class BikeDetailsContent extends StatelessWidget {
                           label: const Text('View Pass Options'),
                         ),
                       ],
+                      if (vm.isInCooldown) ...[
+                        const SizedBox(height: 8),
+                        Text(
+                          'Cooldown active. Try again shortly.',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -104,7 +115,7 @@ class BikeDetailsContent extends StatelessWidget {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: vm.isBooking ? null : () => _bookBike(context),
+                onPressed: vm.canAttemptBooking ? () => _bookBike(context) : null,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   shape: RoundedRectangleBorder(
@@ -116,6 +127,8 @@ class BikeDetailsContent extends StatelessWidget {
                   style: TextStyle(color: AppColors.cardBackground),
                   vm.isBooking
                       ? 'Booking...'
+                      : vm.isInCooldown
+                        ? 'Cooldown Active'
                       : vm.usesOneTimeFee
                           ? 'Book with One-Time Fee'
                           : 'Book Bike',
