@@ -12,18 +12,6 @@ extension PassTypeExtension on PassType {
     }
   }
 
-  // Total days in pass
-  int get totalDays {
-    switch (this) {
-      case PassType.day:
-        return 1;
-      case PassType.monthly:
-        return 30;
-      case PassType.annual:
-        return 365;
-    }
-  }
-
   // Price of the pass
   double get price {
     switch (this) {
@@ -52,12 +40,11 @@ class Pass {
 
   bool get isActive => DateTime.now().isBefore(endDate);
 
-  Duration get remaining => endDate.difference(DateTime.now());
-
-  int get daysRemaining => remaining.inDays.clamp(0, type.totalDays);
+  int get daysRemaining =>
+      endDate.difference(DateTime.now()).inDays.clamp(0, type.duration.inDays);
 
   double get progressFraction {
-    final total = type.totalDays;
+    final total = type.duration.inDays;
     if (total == 0) return 0;
     return (daysRemaining / total).clamp(0.0, 1.0);
   }
