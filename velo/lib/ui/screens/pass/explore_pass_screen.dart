@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../ui/screens/pass/view_model/pass_view_model.dart';
-import '../../../ui/screens/pass/widgets/pass_content.dart';
+import '../../../ui/screens/pass/widgets/plan_card.dart';
 import 'widgets/pass_error.dart';
 import '../../../ui/theme/theme.dart';
 
