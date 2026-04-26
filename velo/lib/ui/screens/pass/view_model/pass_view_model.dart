@@ -1,15 +1,13 @@
 import 'package:flutter/foundation.dart';
 import '../../../../model/pass/pass.dart';
-import '../../../../ui/screens/pass/presenter/pass_presenter.dart';
 import '../../../../ui/state/pass_state.dart';
 export '../../../../model/pass/pass.dart' show PassType;
 
 enum PurchaseStatus { idle, loading, success, error }
 
-
 enum PassScreenMode {
-  browsing,  
-  activePass, 
+  browsing,
+  activePass,
 }
 
 class PassViewModel extends ChangeNotifier {
@@ -26,13 +24,11 @@ class PassViewModel extends ChangeNotifier {
 
   Pass? get _pass => _passState.activePass;
 
-
   PassScreenMode get screenMode =>
       _passState.hasActivePass ? PassScreenMode.activePass : PassScreenMode.browsing;
 
   bool get isInitialising =>
       _passState.isLoading && _purchaseStatus == PurchaseStatus.idle;
-
 
   bool isExpanded(PassType type) => _expandedTypes.contains(type);
 
@@ -50,7 +46,6 @@ class PassViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
   PassType? get activePassType => _pass?.type;
 
   bool isCurrentPass(PassType type) => _pass?.type == type;
@@ -64,20 +59,78 @@ class PassViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  String get passDisplayName        => _pass?.type.displayName ?? '';
-  String get passPriceLabel         => _pass?.type.priceLabel ?? '';
-  String get passPriceSuffix        => _pass?.type.priceSuffix ?? '';
-  String get passActiveUntilLabel   => _pass?.activeUntilLabel ?? '';
-  String get passDaysRemainingLabel => _pass?.daysRemainingLabel ?? '';
+  // --- Active pass display ---
+  String get passDisplayName        => _pass != null ? displayNameFor(_pass!.type) : '';
+  String get passPriceLabel         => _pass != null ? priceLabelFor(_pass!.type) : '';
+  String get passPriceSuffix        => _pass != null ? priceSuffixFor(_pass!.type) : '';
+  String get passActiveUntilLabel   => _pass != null ? _activeUntilLabel(_pass!) : '';
+  String get passDaysRemainingLabel => _pass != null ? _daysRemainingLabel(_pass!) : '';
   double get passProgressFraction   => _pass?.progressFraction ?? 0.0;
 
-  String displayNameFor(PassType type)    => type.displayName;
-  String priceLabelFor(PassType type)     => type.priceLabel;
-  String priceSuffixFor(PassType type)    => type.priceSuffix;
-  String descriptionFor(PassType type)    => type.description;
-  List<String> featuresFor(PassType type) => type.features;
-  String? badgeFor(PassType type)         => type.badge;
+  // --- Per-type display ---
+  String displayNameFor(PassType type) {
+    switch (type) {
+      case PassType.day:     return 'Day Pass';
+      case PassType.monthly: return 'Monthly Pass';
+      case PassType.annual:  return 'Annual Pass';
+    }
+  }
+
+  String descriptionFor(PassType type) {
+    switch (type) {
+      case PassType.day:     return 'Perfect for trying out';
+      case PassType.monthly: return 'Best for regular riders';
+      case PassType.annual:  return 'Maximum savings';
+    }
+  }
+
+  List<String> featuresFor(PassType type) {
+    switch (type) {
+      case PassType.day:
+        return ['24-hour access', 'All premium features', 'No commitment'];
+      case PassType.monthly:
+        return ['30-day access', 'All premium features', 'Save vs daily passes'];
+      case PassType.annual:
+        return ['365-day access', 'All premium features', 'Best value overall'];
+    }
+  }
+
+  String? badgeFor(PassType type) {
+    switch (type) {
+      case PassType.day:     return null;
+      case PassType.monthly: return 'Popular';
+      case PassType.annual:  return 'Best Value';
+    }
+  }
+
+  String priceLabelFor(PassType type) {
+    final p = type.price;
+    return p == p.truncateToDouble()
+        ? '\$${p.toInt()}'
+        : '\$${p.toStringAsFixed(2)}';
+  }
+
+  String priceSuffixFor(PassType type) {
+    switch (type) {
+      case PassType.day:     return 'per day';
+      case PassType.monthly: return 'per month';
+      case PassType.annual:  return 'per year';
+    }
+  }
+
+  // --- Pass instance display helpers ---
+  String _activeUntilLabel(Pass pass) {
+    const months = [
+      '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ];
+    return 'Active until ${months[pass.endDate.month]} ${pass.endDate.day}, ${pass.endDate.year}';
+  }
+
+  String _daysRemainingLabel(Pass pass) {
+    final d = pass.daysRemaining;
+    return '$d day${d == 1 ? '' : 's'}';
+  }
 
   Future<bool> purchasePass(PassType type) async {
     _purchaseStatus = PurchaseStatus.loading;
@@ -107,7 +160,6 @@ class PassViewModel extends ChangeNotifier {
     _purchaseStatus = PurchaseStatus.idle;
     notifyListeners();
   }
-
 
   @override
   void dispose() {

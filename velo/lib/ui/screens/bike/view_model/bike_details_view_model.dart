@@ -25,7 +25,7 @@ class BikeDetailsViewModel extends ChangeNotifier {
   final StationRepository stationRepository;
   final PassState passState;
 
-  static const Duration _bookingCooldown = Duration(seconds: 10);
+  static const Duration _bookingCooldown = Duration(seconds: 100);
   static DateTime? _globalCooldownEndsAt;
 
   Timer? _cooldownEndTimer;
